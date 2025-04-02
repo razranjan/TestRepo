@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = "com.bigbasket"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.vertx:vertx-core:4.3.4'
+    implementation 'io.vertx:vertx-web:4.3.4'
+    implementation 'io.vertx:vertx-web-client:4.3.4'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'io.vertx:vertx-jdbc-client:4.3.4'
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+application {
+    mainClass = 'com.bigbasket.Main'
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes 'Main-Class': 'com.bigbasket.Main'
+    }
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+tasks.register('fatJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+    archiveClassifier.set('all')
+    from sourceSets.main.output
+    configurations = [project.configurations.runtimeClasspath]
+}
