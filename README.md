@@ -2,6 +2,7 @@
 Order Service , Inventory service and Payment Service Demo
 For each service
 ./gradlew clean shadowJar
+
 java -jar build/libs/inventory-service-all.jar
 eval $(minikube docker-env)
 docker build -t order-service ./order-service
